@@ -28,4 +28,6 @@ interface Window {
 
 interface ImportMetaEnv {
   readonly VITE_GOOGLE_CLIENT_ID?: string
+  /** The address of the real, deployed app, e.g. https://<user>.github.io/<repo>/ */
+  readonly VITE_APP_URL?: string
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState, type CSSProperties, type ReactNode } from 'react'
-import { CloudCheck, Dumbbell, Footprints, House, RefreshCw, Scale, Settings as Gear, Utensils } from 'lucide-react'
+import { CloudCheck, Dumbbell, Footprints, House, RefreshCw, Scale, Settings as Gear, TriangleAlert, Utensils } from 'lucide-react'
 import { match, navigate, useRoute } from './lib/router'
 import { syncNow, useSync } from './lib/sync'
 import { addRest, stopRest, useRest } from './lib/timer'
@@ -68,6 +68,7 @@ export default function App() {
       <div>
         <header className="topbar">
           <div className="knurl" />
+          <TestCopyBanner />
           <div className="topbar-row">
             <h1 className="topbar-title display">
               <span className="plate-dot" aria-hidden />
@@ -116,6 +117,37 @@ export function Plate({ size = 26 }: { size?: number }) {
       <circle cx="16" cy="16" r="7.5" fill="var(--chalk)" />
       <circle cx="16" cy="16" r="2.8" fill="var(--bg-deep)" />
     </svg>
+  )
+}
+
+/** The real app's address, baked in at build time. Null when the build doesn't know it. */
+function realAppURL(): URL | null {
+  const raw = import.meta.env.VITE_APP_URL
+  if (!raw) return null
+  try {
+    const u = new URL(raw)
+    if (!u.pathname.endsWith('/')) u.pathname += '/'
+    return u
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Browsers keep data per address, so a workout logged on the dev server or a
+ * preview build never reaches the real app. Say so on every other address.
+ */
+function TestCopyBanner() {
+  const real = realAppURL()
+  if (real && location.origin === real.origin && location.pathname.startsWith(real.pathname)) return null
+  return (
+    <div className="test-copy" role="note">
+      <TriangleAlert size={16} aria-hidden />
+      <span className="grow">
+        <b>Test copy</b> at {location.host}. Anything logged here stays at this address and won’t show up in your real Chalk.
+      </span>
+      {real && <a href={real.href}>Open real app</a>}
+    </div>
   )
 }
 

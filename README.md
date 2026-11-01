@@ -31,6 +31,8 @@ Then install it:
 - **Android (Chrome):** open the URL, then **⋮ → Add to Home screen → Install**.
 - **Windows (Edge):** open the URL, then **… → Apps → Install this site as an app**. In Chrome, use the install icon in the address bar.
 
+Browsers keep data per address, so always log at this URL. Any other address, such as the dev server at `http://<your-PC-IP>:5173` or a local preview, keeps its own separate data and shows a **Test copy** banner to remind you. To make that banner link to the real app on local copies, set `VITE_APP_URL` in `.env.local`.
+
 ## Google Drive sync (optional, about 5 minutes, one time)
 
 1. [Create a Google Cloud project](https://console.cloud.google.com/projectcreate).
